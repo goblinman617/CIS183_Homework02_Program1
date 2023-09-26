@@ -4,8 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -21,7 +23,9 @@ public class MainActivity extends AppCompatActivity {
     SeekBar sb_j_red;
     SeekBar sb_j_green;
     SeekBar sb_j_blue;
+    ListView lv_j_colors;
     ArrayList<ColorInfo> colorList = new ArrayList<>();
+    ColorListAdapter adapter;
 
 
 
@@ -39,9 +43,11 @@ public class MainActivity extends AppCompatActivity {
         sb_j_red = (SeekBar)findViewById(R.id.sb_v_red);
         sb_j_green = (SeekBar)findViewById(R.id.sb_v_green);
         sb_j_blue = (SeekBar)findViewById(R.id.sb_v_blue);
+        lv_j_colors = (ListView)findViewById(R.id.lv_v_colors);
 
 
         saveColorButtonEventHandler();
+        fillListView();//
 
         sb_j_red.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -97,10 +103,18 @@ public class MainActivity extends AppCompatActivity {
         btn_j_save_color.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                addColor();
+                resetValues();
+                adapter.notifyDataSetChanged();
             }
         });
     }
+    public void resetValues(){
+        sb_j_red.setProgress(255);
+        sb_j_blue.setProgress(255);
+        sb_j_green.setProgress(255);
+    }
+    //considering making this 2 functions
     public void changeBackgroundAndText(){
         //consider getting progress of just the changed value and storing the others if this is too slow
         //its also just kind of gross like this
@@ -113,10 +127,15 @@ public class MainActivity extends AppCompatActivity {
         tv_j_hex_value.setText(convertToHexadecimal(r,g,b));
         getWindow().getDecorView().setBackgroundColor(Color.argb(255,r,g,b));
         if (r+g+b < (255+255+255)/2 && g < 210){
-            changeTextColor(0);
+            changeTextColor(0);//white
         }else{
-            changeTextColor(1);
+            changeTextColor(1);//black
         }
+    }
+    public void fillListView(){
+        adapter = new ColorListAdapter(this, colorList);
+        //set the listview adapter
+        lv_j_colors.setAdapter(adapter);
     }
     public void changeTextColor(int mode){//0 for white text. 1 for black text
         if (mode == 0) {
@@ -135,7 +154,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
     public void addColor(){
-
+        int r = sb_j_red.getProgress();
+        int g = sb_j_green.getProgress();
+        int b = sb_j_blue.getProgress();
+        String hex = convertToHexadecimal(r,g,b);
+        ColorInfo entry = new ColorInfo(r,g,b,hex);
+        colorList.add(entry);
     }
     public String convertToHexadecimal(int r, int g, int b){ //checked and working
         char[] letters = new char[] {'A','B','C','D','E','F'};
