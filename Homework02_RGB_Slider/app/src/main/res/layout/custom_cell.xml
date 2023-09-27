@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
 
     <TextView
         android:id="@+id/tv_v_cell_blue"
@@ -12,6 +13,7 @@
         android:layout_marginStart="4dp"
         android:layout_marginTop="8dp"
         android:text="255"
+        android:textColor="#000000"
         app:layout_constraintStart_toEndOf="@+id/tv_v_cell_blue_pre"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -22,6 +24,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
         android:text="Blue: "
+        android:textColor="#000000"
         app:layout_constraintStart_toEndOf="@+id/tv_v_cell_green"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -32,6 +35,7 @@
         android:layout_marginStart="4dp"
         android:layout_marginTop="8dp"
         android:text="255"
+        android:textColor="#000000"
         app:layout_constraintStart_toEndOf="@+id/tv_v_cell_green_pre"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -42,6 +46,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:text="Red: "
+        android:textColor="#000000"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -52,6 +57,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
         android:text="Green: "
+        android:textColor="#000000"
         app:layout_constraintStart_toEndOf="@+id/tv_v_cell_red"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -62,6 +68,7 @@
         android:layout_marginStart="4dp"
         android:layout_marginTop="8dp"
         android:text="255"
+        android:textColor="#000000"
         app:layout_constraintStart_toEndOf="@+id/tv_v_cell_red_pre"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -72,6 +79,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:text="Hexadecimal: "
+        android:textColor="#000000"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_v_cell_red_pre" />
 
@@ -82,6 +90,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:text="AAAAAA"
+        android:textColor="#000000"
         app:layout_constraintStart_toEndOf="@+id/tv_v_cell_hex_pre"
         app:layout_constraintTop_toBottomOf="@+id/tv_v_cell_green_pre" />
 </androidx.constraintlayout.widget.ConstraintLayout>

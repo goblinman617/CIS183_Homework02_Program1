@@ -4,8 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.AndroidException;
 import android.util.Log;
 import android.view.View;
+import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SeekBar;
@@ -33,6 +36,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //we have to set background color here because if we do it in the XML
+        //I'm not able to update it later.
+        //also I need to set the background to white because my phone is in dark mode and it defaults the background to a darker color
+        this.findViewById(android.R.id.content).setBackgroundColor(Color.argb(255,255,255,255));
 
         btn_j_save_color = findViewById(R.id.btn_v_save_color);
         tv_j_red = findViewById(R.id.tv_v_red);
@@ -47,8 +54,18 @@ public class MainActivity extends AppCompatActivity {
 
 
         saveColorButtonEventHandler();
-        fillListView();//
+        fillListView();
 
+        lv_j_colors.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {//holy crap this works
+                ColorInfo selected = (ColorInfo) lv_j_colors.getItemAtPosition(i);
+                sb_j_red.setProgress(selected.getRed());
+                sb_j_blue.setProgress(selected.getBlue());
+                sb_j_green.setProgress(selected.getGreen());
+                changeBackgroundAndText();
+            }
+        });
         sb_j_red.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
@@ -99,6 +116,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+
     public void saveColorButtonEventHandler() {
         btn_j_save_color.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,6 +127,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
     public void resetValues(){
         sb_j_red.setProgress(255);
         sb_j_blue.setProgress(255);
@@ -125,6 +144,18 @@ public class MainActivity extends AppCompatActivity {
         tv_j_green.setText("Green: " + g);
         tv_j_blue.setText("Blue: " + b);
         tv_j_hex_value.setText(convertToHexadecimal(r,g,b));
+        this.findViewById(android.R.id.content).setBackgroundColor(Color.argb(255,r,g,b));
+        if (r+g+b < (255+255+255)/2 && g < 210){
+            changeTextColor(0);//white
+        }else{
+            changeTextColor(1);//black
+        }
+    }
+    public void changeBackgroundAndText(int r, int g, int b, String hex){
+        tv_j_red.setText("Red: " + r);
+        tv_j_green.setText("Green: " + g);
+        tv_j_blue.setText("Blue: " + b);
+        tv_j_hex_value.setText(hex);
         getWindow().getDecorView().setBackgroundColor(Color.argb(255,r,g,b));
         if (r+g+b < (255+255+255)/2 && g < 210){
             changeTextColor(0);//white
@@ -166,6 +197,7 @@ public class MainActivity extends AppCompatActivity {
         String hexadecimal = "";
         int val;
 
+        //red hexadecimal part
         val = r/16;
         if (val < 10){
             hexadecimal += val;
@@ -176,7 +208,6 @@ public class MainActivity extends AppCompatActivity {
             }
             hexadecimal += letters[i];
         }
-        //red hexadecimal part
         val = r%16;
         if (val < 10){
             hexadecimal += val;
@@ -187,6 +218,7 @@ public class MainActivity extends AppCompatActivity {
             }
             hexadecimal += letters[i];
         }
+        //green hexadecimal part
         val = g/16;
         if (val < 10){
             hexadecimal += val;
@@ -197,7 +229,6 @@ public class MainActivity extends AppCompatActivity {
             }
             hexadecimal += letters[i];
         }
-        //green hexadecimal part
         val = g%16;
         if (val < 10){
             hexadecimal += val;
